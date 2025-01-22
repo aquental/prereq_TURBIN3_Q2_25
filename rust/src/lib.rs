@@ -1,8 +1,7 @@
-pub fn add(left: u64, right: u64) -> u64 {
-    left + right
-}
-
 mod programs;
+
+pub const WALLET: &str = "turbin3-wallet.json";
+pub const GITHUB_USER: &str = b"aquental";
 
 #[cfg(test)]
 mod tests {
@@ -70,7 +69,7 @@ mod tests {
     #[test]
     fn airdrop() {
         // Import our keypair
-        let keypair = read_keypair_file("dev-wallet.json").expect("Couldn't find wallet file");
+        let keypair = read_keypair_file(WALLET).expect("Couldn't find wallet file");
         // Connected to Solana Devnet RPC Client
         let client = RpcClient::new(RPC_URL);
         // We're going to claim 2 devnet SOL tokens (2 billion lamports)
@@ -92,7 +91,7 @@ mod tests {
     #[test]
     fn transfer_sol() {
         // Import our keypair
-        let keypair = read_keypair_file("turbin3-wallet.json").expect("Couldn't find wallet file");
+        let keypair = read_keypair_file(WALLET).expect("Couldn't find wallet file");
         // Define our Turbin3 public key
         let to_pubkey = Pubkey::from_str("53sYc5qocKYqDQqPyQS6ipbQNajqUucsSFT3kzdjCneU").unwrap();
         // Create a Solana devnet connection
@@ -121,7 +120,7 @@ mod tests {
     #[test]
     fn empty_wallet() {
         // Import our keypair
-        let keypair = read_keypair_file("turbin3-wallet.json").expect("Couldn't find wallet file");
+        let keypair = read_keypair_file(WALLET).expect("Couldn't find wallet file");
         // Define our Turbin3 public key
         let to_pubkey = Pubkey::from_str("53sYc5qocKYqDQqPyQS6ipbQNajqUucsSFT3kzdjCneU").unwrap();
         // Create a Solana devnet connection
@@ -170,14 +169,14 @@ mod tests {
         // Create a Solana devnet connection
         let rpc_client = RpcClient::new(RPC_URL);
         // Let's define our accounts
-        let signer = read_keypair_file("turbin3-wallet.json").expect("Couldn't find wallet file");
+        let signer = read_keypair_file(WALLET).expect("Couldn't find wallet file");
         let prereq = TurbinePrereqProgram::derive_program_address(&[
             b"prereq",
             signer.pubkey().to_bytes().as_ref(),
         ]);
         // Define our instruction data
         let args = CompleteArgs {
-            github: b"aquental".to_vec(),
+            github: GITHUB_USER.to_vec(),
         };
         // Get recent blockhash
         let blockhash = rpc_client
