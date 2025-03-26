@@ -17,7 +17,7 @@ const provider = new AnchorProvider(connection, new Wallet(keypair), {
 const program: Program<Turbin3Prereq> = new Program(IDL, provider);
 
 // Create the PDA for our enrollment account
-const enrollment_seeds = [Buffer.from("prereq"), keypair.publicKey.toBuffer()];
+const enrollment_seeds = [Buffer.from("pre"), keypair.publicKey.toBuffer()];
 const [enrollment_key, _bump] = PublicKey.findProgramAddressSync(
   enrollment_seeds,
   program.programId
@@ -27,14 +27,14 @@ const [enrollment_key, _bump] = PublicKey.findProgramAddressSync(
 (async () => {
   try {
     const txhash = await program.methods
-      .complete(github)
+      .submit(github)
       .accounts({
         signer: keypair.publicKey,
       })
       .signers([keypair])
       .rpc();
     console.log(`Success! Check out your TX here:
-        https://explorer.solana.com/tx/${txhash}?cluster=devnet`);
+  https://explorer.solana.com/tx/${txhash}?cluster=devnet`);
   } catch (e) {
     console.error(`Oops, something went wrong: ${e}`);
   }
