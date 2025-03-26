@@ -1,8 +1,8 @@
-# TURBIN3 Q1 25
+# TURBIN3 Q2 25
 
 ## turbin3-prereq-ts
 
-**Cohort Q1** / 2025
+**Cohort Q2** / 2025
 
 ### _Typescript_ - Prerequisites: Enrollment dApp
 > 
