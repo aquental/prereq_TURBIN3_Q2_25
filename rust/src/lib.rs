@@ -3,10 +3,10 @@ mod programs;
 pub const TURBIN3_WALLET: &str = "turbin3-wallet.json";
 pub const TURBIN3_PUB_KEY: &str = "Dn2ucNUVe5ptVueYRKf6m6effxs13RJpjJEMfEL9yMzG";
 pub const DEV_WALLET: &str = "dev-wallet.json";
-pub const GITHUB_USER: &str = b"aquental";
+pub const GITHUB_USER: &[u8; 8] = b"aquental";
 pub const RPC_DEVNET: &str = "https://api.devnet.solana.com";
 //pub const RPC_DEVNET: &str = "https://polished-warmhearted-frog.solana-devnet.quiknode.pro/9bc0c3437243817577c59c3690d3bcde03fe8b6f/";
-pub const PREREQ_SEED: &str = b"prereq";
+pub const PREREQ_SEED: &[u8; 6] = b"prereq";
 
 #[cfg(test)]
 mod tests {
@@ -119,8 +119,8 @@ mod tests {
     /// Enrolls a user by creating a Solana Devnet connection and executing a transaction.
     /// The function reads the signer's keypair from a wallet file, derives the program address
     /// for the prerequisite account, and sets up the GitHub account using provided arguments.
-    /// It retrieves the latest blockhash and invokes the `complete` function of the 
-    /// TurbinePrereqProgram to create the transaction. 
+    /// It retrieves the latest blockhash and invokes the `complete` function of the
+    /// TurbinePrereqProgram to create the transaction.
     /// Finally, it sends and confirms the transaction, printing the transaction signature
     /// upon success.
     #[test]
