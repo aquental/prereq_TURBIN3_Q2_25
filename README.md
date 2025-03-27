@@ -12,6 +12,6 @@
 
 ### _Rust_ - Prerequisites: Enrollment dApp
 
-> link ?
+> [Trb3aEx85DW1cEEvoqEaBkMn1tfmNEEEPaKzLSu4YAv program idl](https://explorer.solana.com/address/Trb3aEx85DW1cEEvoqEaBkMn1tfmNEEEPaKzLSu4YAv?cluster=devnet) ?
 >
-> devnet trx ?
+> [devnet-transaction]()
