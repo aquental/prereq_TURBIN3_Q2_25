@@ -3,7 +3,7 @@ use solana_idlgen::idlgen;
 // Anchor IDL version 0.30.1
 idlgen!(
 {
-  "address": "Trb3aEx85DW1cEEvoqEaBkMn1tfmNEEEPaKzLSu4YAv",
+  "address": "ADcaide4vBtKuyZQqdU689YqEGZMCmS4tL35bdTv9wJa",
   "metadata": {
     "name": "turbine_prereq",
     "version": "0.1.0",
@@ -12,41 +12,16 @@ idlgen!(
   },
   "instructions": [
     {
-      "name": "clean",
+      "name": "complete",
       "discriminator": [
-        250,
-        191,
-        56,
-        128,
-        150,
-        251,
-        1,
-        103
-      ],
-      "accounts": [
-        {
-          "name": "signer",
-          "writable": true,
-          "signer": true
-        },
-        {
-          "name": "prereq",
-          "writable": true
-        }
-      ],
-      "args": []
-    },
-    {
-      "name": "submit",
-      "discriminator": [
+        0,
+        77,
+        224,
+        147,
+        136,
+        25,
         88,
-        166,
-        102,
-        181,
-        162,
-        127,
-        170,
-        48
+        76
       ],
       "accounts": [
         {
@@ -65,10 +40,9 @@ idlgen!(
                   112,
                   114,
                   101,
-                  81,
-                  50,
-                  50,
-                  53
+                  114,
+                  101,
+                  113
                 ]
               },
               {
@@ -85,7 +59,7 @@ idlgen!(
       ],
       "args": [
         {
-          "name": "github_username",
+          "name": "github",
           "type": "bytes"
         }
       ]
@@ -127,29 +101,16 @@ idlgen!(
   ],
   "accounts": [
     {
-      "name": "Q2Prereq2024",
+      "name": "SolanaCohort5Account",
       "discriminator": [
-        210,
-        203,
-        168,
-        103,
-        251,
-        233,
-        204,
-        6
-      ]
-    },
-    {
-      "name": "Q2Prereq2025",
-      "discriminator": [
-        1,
-        231,
-        212,
-        91,
-        204,
-        178,
-        112,
-        25
+        167,
+        81,
+        85,
+        136,
+        32,
+        169,
+        137,
+        77
       ]
     }
   ],
@@ -162,23 +123,7 @@ idlgen!(
   ],
   "types": [
     {
-      "name": "Q2Prereq2024",
-      "type": {
-        "kind": "struct",
-        "fields": [
-          {
-            "name": "github",
-            "type": "bytes"
-          },
-          {
-            "name": "key",
-            "type": "pubkey"
-          }
-        ]
-      }
-    },
-    {
-      "name": "Q2Prereq2025",
+      "name": "SolanaCohort5Account",
       "type": {
         "kind": "struct",
         "fields": [
@@ -194,4 +139,5 @@ idlgen!(
       }
     }
   ]
-});
+}
+);
