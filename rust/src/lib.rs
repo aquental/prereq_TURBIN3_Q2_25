@@ -12,7 +12,7 @@ pub const PREREQ_SEED: &[u8; 6] = b"prereq";
 mod tests {
     use crate::{
         DEV_WALLET, GITHUB_USER, PREREQ_SEED, RPC_DEVNET, TURBIN3_PUB_KEY, TURBIN3_WALLET,
-        programs::turbin3_prereq::{CompleteArgs, Turbin3PrereqProgram, UpdateArgs},
+        programs::turbin3_prereq::{CompleteArgs, Turbin3PrereqProgram},
     };
     use bs58;
     use solana_client::rpc_client::RpcClient;
