@@ -4,15 +4,15 @@ pub const TURBIN3_WALLET: &str = "turbin3-wallet.json";
 pub const TURBIN3_PUB_KEY: &str = "Dn2ucNUVe5ptVueYRKf6m6effxs13RJpjJEMfEL9yMzG";
 pub const DEV_WALLET: &str = "dev-wallet.json";
 pub const GITHUB_USER: &[u8; 8] = b"aquental";
-pub const RPC_DEVNET: &str = "https://api.devnet.solana.com";
-//pub const RPC_DEVNET: &str = "https://polished-warmhearted-frog.solana-devnet.quiknode.pro/9bc0c3437243817577c59c3690d3bcde03fe8b6f/";
+//pub const RPC_DEVNET: &str = "https://api.devnet.solana.com";
+pub const RPC_DEVNET: &str = "https://polished-warmhearted-frog.solana-devnet.quiknode.pro/9bc0c3437243817577c59c3690d3bcde03fe8b6f/";
 pub const PREREQ_SEED: &[u8; 6] = b"prereq";
 
 #[cfg(test)]
 mod tests {
     use crate::{
-        DEV_WALLET, PUB_KEY, RPC_DEVNET,
-        programs::Turbin3_prereq::{CompleteArgs, TurbinePrereqProgram, UpdateArgs},
+        DEV_WALLET, GITHUB_USER, PREREQ_SEED, RPC_DEVNET, TURBIN3_PUB_KEY, TURBIN3_WALLET,
+        programs::turbin3_prereq::{CompleteArgs, Turbin3PrereqProgram, UpdateArgs},
     };
     use bs58;
     use solana_client::rpc_client::RpcClient;
@@ -130,7 +130,7 @@ mod tests {
         // Let's define our accounts
         let signer = read_keypair_file(TURBIN3_WALLET).expect("Couldn't find wallet file");
         // Creating first PDA
-        let prereq = TurbinePrereqProgram::derive_program_address(&[
+        let prereq = Turbin3PrereqProgram::derive_program_address(&[
             PREREQ_SEED,
             signer.pubkey().to_bytes().as_ref(),
         ]);
@@ -146,7 +146,7 @@ mod tests {
             .expect("Failed to get recent blockhash");
 
         // Now, we need to invoke our complete function
-        let transaction = TurbinePrereqProgram::complete(
+        let transaction = Turbin3PrereqProgram::complete(
             &[&signer.pubkey(), &prereq, &system_program::id()],
             &args,
             Some(&signer.pubkey()),
