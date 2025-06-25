@@ -1,6 +1,6 @@
-# TURBIN3 Q2 25
+# TURBIN3 Q3 25
 
-**Cohort Q2** / 2025
+**Cohort Q3** / 2025
 
 ## turbin3-prereq-ts
 
