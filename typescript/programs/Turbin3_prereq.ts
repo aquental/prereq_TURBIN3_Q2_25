@@ -1,277 +1,669 @@
-export type Turbin3Prereq = {
-  address: "Trb3aEx85DW1cEEvoqEaBkMn1tfmNEEEPaKzLSu4YAv";
+/**
+ * Program IDL in camelCase format in order to be used in JS/TS.
+ *
+ * Note that this is only a type helper and is not the actual IDL. The original
+ * IDL can be found at `target/idl/q3_pre_reqs_rs.json`.
+ */
+export type Q3PreReqsRs = {
+  address: "TRBZyQHB3m68FGeVsqTK39Wm4xejadjVhP5MAZaKWDM";
   metadata: {
-    name: "turbine_prereq";
+    name: "q3PreReqsRs";
     version: "0.1.0";
     spec: "0.1.0";
     description: "Created with Anchor";
   };
   instructions: [
     {
-      name: "clean";
-      discriminator: [250, 191, 56, 128, 150, 251, 1, 103];
+      name: "close";
+      discriminator: [98, 165, 201, 177, 108, 65, 206, 96];
       accounts: [
         {
-          name: "signer";
+          name: "user";
           writable: true;
-          signer: true;
         },
         {
-          name: "prereq";
-          writable: true;
-        }
-      ];
-      args: [];
-    },
-    {
-      name: "submit";
-      discriminator: [88, 166, 102, 181, 162, 127, 170, 48];
-      accounts: [
-        {
-          name: "signer";
-          writable: true;
-          signer: true;
-        },
-        {
-          name: "prereq";
+          name: "account";
           writable: true;
           pda: {
             seeds: [
               {
                 kind: "const";
-                value: [112, 114, 101, 81, 50, 50, 53];
+                value: [112, 114, 101, 114, 101, 113, 115];
               },
               {
                 kind: "account";
-                path: "signer";
+                path: "user";
               }
             ];
           };
         },
         {
-          name: "system_program";
+          name: "systemProgram";
           address: "11111111111111111111111111111111";
         }
       ];
-      args: [
-        {
-          name: "github_username";
-          type: "bytes";
-        }
-      ];
+      args: [];
     },
     {
-      name: "update";
-      discriminator: [219, 200, 88, 176, 158, 63, 253, 127];
+      name: "createCollection";
+      discriminator: [156, 251, 92, 54, 233, 2, 16, 82];
       accounts: [
         {
-          name: "signer";
+          name: "creator";
           writable: true;
           signer: true;
         },
         {
-          name: "prereq";
+          name: "collection";
           writable: true;
+          signer: true;
         },
         {
-          name: "system_program";
+          name: "authority";
+          pda: {
+            seeds: [
+              {
+                kind: "const";
+                value: [99, 111, 108, 108, 101, 99, 116, 105, 111, 110];
+              },
+              {
+                kind: "account";
+                path: "collection";
+              }
+            ];
+          };
+        },
+        {
+          name: "mplCoreProgram";
+          address: "CoREENxT6tW1HoK8ypY1SxRMZTcVPm7R94rH4PZNhX7d";
+        },
+        {
+          name: "systemProgram";
+          address: "11111111111111111111111111111111";
+        }
+      ];
+      args: [];
+    },
+    {
+      name: "initialize";
+      discriminator: [175, 175, 109, 31, 13, 152, 155, 237];
+      accounts: [
+        {
+          name: "user";
+          writable: true;
+          signer: true;
+        },
+        {
+          name: "account";
+          writable: true;
+          pda: {
+            seeds: [
+              {
+                kind: "const";
+                value: [112, 114, 101, 114, 101, 113, 115];
+              },
+              {
+                kind: "account";
+                path: "user";
+              }
+            ];
+          };
+        },
+        {
+          name: "systemProgram";
           address: "11111111111111111111111111111111";
         }
       ];
       args: [
         {
           name: "github";
-          type: "bytes";
+          type: "string";
+        }
+      ];
+    },
+    {
+      name: "submitRs";
+      discriminator: [77, 124, 82, 163, 21, 133, 181, 206];
+      accounts: [
+        {
+          name: "user";
+          writable: true;
+          signer: true;
+        },
+        {
+          name: "account";
+          writable: true;
+          pda: {
+            seeds: [
+              {
+                kind: "const";
+                value: [112, 114, 101, 114, 101, 113, 115];
+              },
+              {
+                kind: "account";
+                path: "user";
+              }
+            ];
+          };
+        },
+        {
+          name: "mint";
+          writable: true;
+          signer: true;
+        },
+        {
+          name: "collection";
+          writable: true;
+        },
+        {
+          name: "authority";
+          pda: {
+            seeds: [
+              {
+                kind: "const";
+                value: [99, 111, 108, 108, 101, 99, 116, 105, 111, 110];
+              },
+              {
+                kind: "account";
+                path: "collection";
+              }
+            ];
+          };
+        },
+        {
+          name: "mplCoreProgram";
+          address: "CoREENxT6tW1HoK8ypY1SxRMZTcVPm7R94rH4PZNhX7d";
+        },
+        {
+          name: "systemProgram";
+          address: "11111111111111111111111111111111";
+        }
+      ];
+      args: [];
+    },
+    {
+      name: "submitTs";
+      discriminator: [137, 241, 199, 223, 125, 33, 85, 217];
+      accounts: [
+        {
+          name: "user";
+          writable: true;
+          signer: true;
+        },
+        {
+          name: "account";
+          writable: true;
+          pda: {
+            seeds: [
+              {
+                kind: "const";
+                value: [112, 114, 101, 114, 101, 113, 115];
+              },
+              {
+                kind: "account";
+                path: "user";
+              }
+            ];
+          };
+        },
+        {
+          name: "mint";
+          writable: true;
+          signer: true;
+        },
+        {
+          name: "collection";
+          writable: true;
+        },
+        {
+          name: "authority";
+          pda: {
+            seeds: [
+              {
+                kind: "const";
+                value: [99, 111, 108, 108, 101, 99, 116, 105, 111, 110];
+              },
+              {
+                kind: "account";
+                path: "collection";
+              }
+            ];
+          };
+        },
+        {
+          name: "mplCoreProgram";
+          address: "CoREENxT6tW1HoK8ypY1SxRMZTcVPm7R94rH4PZNhX7d";
+        },
+        {
+          name: "systemProgram";
+          address: "11111111111111111111111111111111";
+        }
+      ];
+      args: [];
+    },
+    {
+      name: "update";
+      discriminator: [219, 200, 88, 176, 158, 63, 253, 127];
+      accounts: [
+        {
+          name: "user";
+          writable: true;
+          signer: true;
+        },
+        {
+          name: "account";
+          pda: {
+            seeds: [
+              {
+                kind: "const";
+                value: [112, 114, 101, 114, 101, 113, 115];
+              },
+              {
+                kind: "account";
+                path: "user";
+              }
+            ];
+          };
+        },
+        {
+          name: "systemProgram";
+          address: "11111111111111111111111111111111";
+        }
+      ];
+      args: [
+        {
+          name: "github";
+          type: "string";
         }
       ];
     }
   ];
   accounts: [
     {
-      name: "Q2Prereq2024";
-      discriminator: [210, 203, 168, 103, 251, 233, 204, 6];
-    },
-    {
-      name: "Q2Prereq2025";
-      discriminator: [1, 231, 212, 91, 204, 178, 112, 25];
+      name: "applicationAccount";
+      discriminator: [222, 181, 17, 200, 212, 149, 64, 88];
     }
   ];
   errors: [
     {
       code: 6000;
-      name: "InvalidGithubAccount";
-      msg: "Invalid Github account";
+      name: "preReqTsNotCompleted";
+      msg: "TS submission not completed.";
+    },
+    {
+      code: 6001;
+      name: "preReqTsAlreadyCompleted";
+      msg: "TS submission already completed.";
+    },
+    {
+      code: 6002;
+      name: "preReqRsAlreadyCompleted";
+      msg: "Rust submission already completed.";
+    },
+    {
+      code: 6003;
+      name: "preReqRsNotInTimeWindow";
+      msg: "Submission not allowed.";
     }
   ];
   types: [
     {
-      name: "Q2Prereq2024";
+      name: "applicationAccount";
       type: {
         kind: "struct";
         fields: [
           {
-            name: "github";
-            type: "bytes";
+            name: "user";
+            type: "pubkey";
           },
           {
-            name: "key";
-            type: "pubkey";
-          }
-        ];
-      };
-    },
-    {
-      name: "Q2Prereq2025";
-      type: {
-        kind: "struct";
-        fields: [
-          {
-            name: "github";
-            type: "bytes";
+            name: "bump";
+            type: "u8";
           },
           {
-            name: "key";
-            type: "pubkey";
+            name: "preReqTs";
+            type: "bool";
+          },
+          {
+            name: "preReqRs";
+            type: "bool";
+          },
+          {
+            name: "github";
+            type: "string";
           }
         ];
       };
     }
   ];
 };
-export const IDL: Turbin3Prereq = {
-  address: "Trb3aEx85DW1cEEvoqEaBkMn1tfmNEEEPaKzLSu4YAv",
+export const IDL: Q3PreReqsRs = {
+  address: "TRBZyQHB3m68FGeVsqTK39Wm4xejadjVhP5MAZaKWDM",
   metadata: {
-    name: "turbine_prereq",
+    name: "q3PreReqsRs",
     version: "0.1.0",
     spec: "0.1.0",
     description: "Created with Anchor",
   },
   instructions: [
     {
-      name: "clean",
-      discriminator: [250, 191, 56, 128, 150, 251, 1, 103],
+      name: "close",
+      discriminator: [98, 165, 201, 177, 108, 65, 206, 96],
       accounts: [
         {
-          name: "signer",
-          writable: true,
-          signer: true,
-        },
-        {
-          name: "prereq",
+          name: "user",
           writable: true,
         },
-      ],
-      args: [],
-    },
-    {
-      name: "submit",
-      discriminator: [88, 166, 102, 181, 162, 127, 170, 48],
-      accounts: [
         {
-          name: "signer",
-          writable: true,
-          signer: true,
-        },
-        {
-          name: "prereq",
+          name: "account",
           writable: true,
           pda: {
             seeds: [
               {
                 kind: "const",
-                value: [112, 114, 101, 81, 50, 50, 53],
+                value: [112, 114, 101, 114, 101, 113, 115],
               },
               {
                 kind: "account",
-                path: "signer",
+                path: "user",
               },
             ],
           },
         },
         {
-          name: "system_program",
+          name: "systemProgram",
           address: "11111111111111111111111111111111",
         },
       ],
-      args: [
-        {
-          name: "github_username",
-          type: "bytes",
-        },
-      ],
+      args: [],
     },
     {
-      name: "update",
-      discriminator: [219, 200, 88, 176, 158, 63, 253, 127],
+      name: "createCollection",
+      discriminator: [156, 251, 92, 54, 233, 2, 16, 82],
       accounts: [
         {
-          name: "signer",
+          name: "creator",
           writable: true,
           signer: true,
         },
         {
-          name: "prereq",
+          name: "collection",
           writable: true,
+          signer: true,
         },
         {
-          name: "system_program",
+          name: "authority",
+          pda: {
+            seeds: [
+              {
+                kind: "const",
+                value: [99, 111, 108, 108, 101, 99, 116, 105, 111, 110],
+              },
+              {
+                kind: "account",
+                path: "collection",
+              },
+            ],
+          },
+        },
+        {
+          name: "mplCoreProgram",
+          address: "CoREENxT6tW1HoK8ypY1SxRMZTcVPm7R94rH4PZNhX7d",
+        },
+        {
+          name: "systemProgram",
+          address: "11111111111111111111111111111111",
+        },
+      ],
+      args: [],
+    },
+    {
+      name: "initialize",
+      discriminator: [175, 175, 109, 31, 13, 152, 155, 237],
+      accounts: [
+        {
+          name: "user",
+          writable: true,
+          signer: true,
+        },
+        {
+          name: "account",
+          writable: true,
+          pda: {
+            seeds: [
+              {
+                kind: "const",
+                value: [112, 114, 101, 114, 101, 113, 115],
+              },
+              {
+                kind: "account",
+                path: "user",
+              },
+            ],
+          },
+        },
+        {
+          name: "systemProgram",
           address: "11111111111111111111111111111111",
         },
       ],
       args: [
         {
           name: "github",
-          type: "bytes",
+          type: "string",
+        },
+      ],
+    },
+    {
+      name: "submitRs",
+      discriminator: [77, 124, 82, 163, 21, 133, 181, 206],
+      accounts: [
+        {
+          name: "user",
+          writable: true,
+          signer: true,
+        },
+        {
+          name: "account",
+          writable: true,
+          pda: {
+            seeds: [
+              {
+                kind: "const",
+                value: [112, 114, 101, 114, 101, 113, 115],
+              },
+              {
+                kind: "account",
+                path: "user",
+              },
+            ],
+          },
+        },
+        {
+          name: "mint",
+          writable: true,
+          signer: true,
+        },
+        {
+          name: "collection",
+          writable: true,
+        },
+        {
+          name: "authority",
+          pda: {
+            seeds: [
+              {
+                kind: "const",
+                value: [99, 111, 108, 108, 101, 99, 116, 105, 111, 110],
+              },
+              {
+                kind: "account",
+                path: "collection",
+              },
+            ],
+          },
+        },
+        {
+          name: "mplCoreProgram",
+          address: "CoREENxT6tW1HoK8ypY1SxRMZTcVPm7R94rH4PZNhX7d",
+        },
+        {
+          name: "systemProgram",
+          address: "11111111111111111111111111111111",
+        },
+      ],
+      args: [],
+    },
+    {
+      name: "submitTs",
+      discriminator: [137, 241, 199, 223, 125, 33, 85, 217],
+      accounts: [
+        {
+          name: "user",
+          writable: true,
+          signer: true,
+        },
+        {
+          name: "account",
+          writable: true,
+          pda: {
+            seeds: [
+              {
+                kind: "const",
+                value: [112, 114, 101, 114, 101, 113, 115],
+              },
+              {
+                kind: "account",
+                path: "user",
+              },
+            ],
+          },
+        },
+        {
+          name: "mint",
+          writable: true,
+          signer: true,
+        },
+        {
+          name: "collection",
+          writable: true,
+        },
+        {
+          name: "authority",
+          pda: {
+            seeds: [
+              {
+                kind: "const",
+                value: [99, 111, 108, 108, 101, 99, 116, 105, 111, 110],
+              },
+              {
+                kind: "account",
+                path: "collection",
+              },
+            ],
+          },
+        },
+        {
+          name: "mplCoreProgram",
+          address: "CoREENxT6tW1HoK8ypY1SxRMZTcVPm7R94rH4PZNhX7d",
+        },
+        {
+          name: "systemProgram",
+          address: "11111111111111111111111111111111",
+        },
+      ],
+      args: [],
+    },
+    {
+      name: "update",
+      discriminator: [219, 200, 88, 176, 158, 63, 253, 127],
+      accounts: [
+        {
+          name: "user",
+          writable: true,
+          signer: true,
+        },
+        {
+          name: "account",
+          pda: {
+            seeds: [
+              {
+                kind: "const",
+                value: [112, 114, 101, 114, 101, 113, 115],
+              },
+              {
+                kind: "account",
+                path: "user",
+              },
+            ],
+          },
+        },
+        {
+          name: "systemProgram",
+          address: "11111111111111111111111111111111",
+        },
+      ],
+      args: [
+        {
+          name: "github",
+          type: "string",
         },
       ],
     },
   ],
   accounts: [
     {
-      name: "Q2Prereq2024",
-      discriminator: [210, 203, 168, 103, 251, 233, 204, 6],
-    },
-    {
-      name: "Q2Prereq2025",
-      discriminator: [1, 231, 212, 91, 204, 178, 112, 25],
+      name: "applicationAccount",
+      discriminator: [222, 181, 17, 200, 212, 149, 64, 88],
     },
   ],
   errors: [
     {
       code: 6000,
-      name: "InvalidGithubAccount",
-      msg: "Invalid Github account",
+      name: "preReqTsNotCompleted",
+      msg: "TS submission not completed.",
+    },
+    {
+      code: 6001,
+      name: "preReqTsAlreadyCompleted",
+      msg: "TS submission already completed.",
+    },
+    {
+      code: 6002,
+      name: "preReqRsAlreadyCompleted",
+      msg: "Rust submission already completed.",
+    },
+    {
+      code: 6003,
+      name: "preReqRsNotInTimeWindow",
+      msg: "Submission not allowed.",
     },
   ],
   types: [
     {
-      name: "Q2Prereq2024",
+      name: "applicationAccount",
       type: {
         kind: "struct",
         fields: [
           {
-            name: "github",
-            type: "bytes",
-          },
-          {
-            name: "key",
+            name: "user",
             type: "pubkey",
           },
-        ],
-      },
-    },
-    {
-      name: "Q2Prereq2025",
-      type: {
-        kind: "struct",
-        fields: [
           {
-            name: "github",
-            type: "bytes",
+            name: "bump",
+            type: "u8",
           },
           {
-            name: "key",
-            type: "pubkey",
+            name: "preReqTs",
+            type: "bool",
+          },
+          {
+            name: "preReqRs",
+            type: "bool",
+          },
+          {
+            name: "github",
+            type: "string",
           },
         ],
       },
