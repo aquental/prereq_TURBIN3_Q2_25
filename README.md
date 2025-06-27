@@ -130,14 +130,19 @@ cargo add bs58
 cargo add solana-client
 ```
 
----
-
 ### _Rust_ - Prerequisites: Enrollment dApp
 
-> [Anchor Program IDL](???)
->
-> [devnet-transaction](???)
+- _submit_rs_ :
+  - ()
+  - 4 accounts:
+    - user – Your public key (used for the Turbin3 application).
+    - account – The account created by the program (from the TypeScript prerequisite).
+    - mint – The address of the new asset (created by the program).
+    - collection – The collection to which the asset belongs.
+    - authority – The authority signing the NFT creation (PDA).
+    - mpl_core_program – The Metaplex Core program
+    - system_program – The Solana system program
 
-```
-cargo test enroll -- --nocapture
-```
+> [Anchor Program IDL](./rust/src/program/TRBZyQHB3m68FGeVsqTK39Wm4xejadjVhP5MAZaKWDM-idl.json) from [address](https://explorer.solana.com/address/TRBZyQHB3m68FGeVsqTK39Wm4xejadjVhP5MAZaKWDM/anchor-program?cluster=devnet)
+>
+> [devnet-transaction](https://explorer.solana.com/tx/5oTCTx4FXESAx3qwcgXLQhL2HdXwCKXiTNQpntw8xNhUwQn7FUoL58VBordwJRbNV2s636dRNUCz18i7GWhi7rpz/?cluster=devnet)
