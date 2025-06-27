@@ -1,52 +1,64 @@
-mod programs;
-
 pub const TURBIN3_WALLET: &str = "turbin3-wallet.json";
 pub const TURBIN3_PUB_KEY: &str = "Dn2ucNUVe5ptVueYRKf6m6effxs13RJpjJEMfEL9yMzG";
 pub const DEV_WALLET: &str = "dev-wallet.json";
-pub const GITHUB_USER: &[u8; 8] = b"aquental";
-//pub const RPC_DEVNET: &str = "https://api.devnet.solana.com";
-pub const RPC_DEVNET: &str = "https://polished-warmhearted-frog.solana-devnet.quiknode.pro/9bc0c3437243817577c59c3690d3bcde03fe8b6f/";
-pub const PREREQ_SEED: &[u8; 6] = b"prereq";
+//pub const GITHUB_USER: &[u8; 8] = b"aquental";
+//pub const PREREQ_SEED: &[u8; 6] = b"prereqs";
+const RPC_URL: &str =
+    "https://turbine-solanad-4cde.devnet.rpcpool.com/9a9da9cf-6db1-47dc-839a-55aca5c9c80a";
 
 #[cfg(test)]
 mod tests {
-    use crate::{
-        DEV_WALLET, GITHUB_USER, PREREQ_SEED, RPC_DEVNET, TURBIN3_PUB_KEY, TURBIN3_WALLET,
-        programs::turbin3_prereq::{CompleteArgs, Turbin3PrereqProgram},
-    };
+    use super::*;
     use bs58;
     use solana_client::rpc_client::RpcClient;
-    use solana_program::{pubkey::Pubkey, system_instruction::transfer};
     use solana_sdk::{
         message::Message,
-        signature::{Keypair, Signer, read_keypair_file},
-        system_program,
+        pubkey::Pubkey,
+        signature::{Keypair, Signer},
+        signer::keypair::read_keypair_file,
+        system_instruction::transfer,
         transaction::Transaction,
     };
-    use std::io::{self, BufRead};
     use std::str::FromStr;
+    #[test]
+    fn base58_to_wallet() {
+        let pvt_key = "2SjGRsmREMsHCvpgUkf5yjm4JfkdjY7USBWwW9LVxt7VdDc1gFTWyPkXfrySw1sr99UrfRh6szoQ7gnonzRC8hFG";
+        println!("Input your private key as a base58 string: {}", pvt_key);
+        let base58 = pvt_key.lines().next().unwrap();
+        println!("Your wallet file format is:");
+        let wallet = bs58::decode(base58).into_vec().unwrap();
+        println!("{:?}", wallet);
+    }
 
-    const RPC_URL: &str = RPC_DEVNET;
+    #[test]
+    fn wallet_to_base58() {
+        println!("Your private key as a JSON byte array is:");
+        let byte_array = "[72, 52, 88, 98, 249, 84, 183, 151, 226, 215, 97, 156, 164, 119, 143, 110, 22, 145, 187, 255, 124, 166, 106, 215, 116, 142, 236, 33, 6, 102, 97, 28, 31, 15, 6, 255, 105, 241, 15, 83, 186, 125, 57, 180, 245, 253, 113, 156, 57, 124, 151, 75, 245, 252, 97, 139, 243, 5, 237, 102, 95, 174, 151, 99]";
+        let wallet = byte_array
+            .trim_start_matches('[')
+            .trim_end_matches(']')
+            .split(',')
+            .map(|s| s.trim().parse::<u8>().unwrap())
+            .collect::<Vec<u8>>();
+        println!("Your Base58-encoded private key is:");
+        let base58 = bs58::encode(wallet).into_string();
+        println!("{:?}", base58);
+    }
 
-    /// Generate a new Solana keypair, print it to the console and output the corresponding JSON data.
-    /// The user should copy and paste this into a JSON file to save the wallet.
     #[test]
     fn keygen() {
-        // Let's create a new Keypair
+        // Create a new keypair
         let kp = Keypair::new();
-        // Print newly created keypair to the console
         println!(
             "You've generated a new Solana wallet: {}",
             kp.pubkey().to_string()
         );
-        println!("\nTo save your wallet, Copy and Paste the following into a JSON file!");
+        println!("\nTo save your wallet, copy and paste the following into a JSON file:");
         println!("{:?}", kp.to_bytes());
     }
 
-    /// Claims 2 SOL from the Solana Devnet faucet, given a path to a valid keypair file.
-    /// Prints the TX signature to the console upon success.
     #[test]
-    fn airdrop() {
+    fn claim_airdrop() {
         // let's read our keypair file
         let keypair = read_keypair_file(DEV_WALLET).expect("Couldn't find wallet file");
         // Connected to Solana Devnet RPC Client
@@ -64,142 +76,84 @@ mod tests {
         };
     }
 
-    /// Transfer all the SOL from the dev wallet to the Turbin3 wallet, minus the fee that will be
-    /// incurred when sending the transaction. This is done to empty the devnet wallet of SOL.
     #[test]
     fn transfer_sol() {
         // Let's get our dev-wallet.json file
         let keypair = read_keypair_file(DEV_WALLET).expect("Couldn't find wallet file");
+        // Generate a signature from the keypair
+        let pubkey = keypair.pubkey();
+
+        let message_bytes = b"I verify my Solana Keypair!";
+        let sig = keypair.sign_message(message_bytes);
+        println!(
+            "PubKey: {}, message: {:?}, signature: {}",
+            pubkey.to_string(),
+            message_bytes,
+            sig.to_string()
+        );
+        // Verify the signature using the public key
+        match sig.verify(&pubkey.to_bytes(), message_bytes) {
+            true => println!("Signature verified"),
+            false => println!("Verification failed"),
+        }
         // Define our Turbin3 public key
-        let turbin3_pubkey = Pubkey::from_str(TURBIN3_PUB_KEY).unwrap();
+        let to_pubkey = Pubkey::from_str(TURBIN3_PUB_KEY).unwrap();
         // Create a solana devnet connection
         let rpc_client = RpcClient::new(RPC_URL);
-        // To sign transactions, we're gonna need recent blockhash
         let recent_blockhash = rpc_client
             .get_latest_blockhash()
             .expect("Failed to get recent blockhash");
-        // We're gonna transfer 0.1 SOL from our dev wallet to Turbin3 wallet
-        //let transaction = Transaction::new_signed_with_payer(&[transfer(&keypair.pubkey(), &turbin3_pubkey, 100_000_000)], Some(&keypair.pubkey()), &vec![&keypair], recent_blockhash);
-        // Let's submit transaction and grab the tx Signature
-        //let signature = rpc_client.send_and_confirm_transaction(&transaction).expect("Failed to send transaction");
-        // Print and grab transaction signature on success
-        //println!("Success! Check out your TX here: https://explorer.solana.com/tx/{}?cluster=devnet", signature);
-
-        // ATTEMPTING TO EMPTY THE DEVNET WALLET
-        let balance = rpc_client
-            .get_balance(&keypair.pubkey())
-            .expect("Failed to get balance");
-        // creating test transaction to calculate fees
-        let message = Message::new_with_blockhash(
-            &[transfer(&keypair.pubkey(), &turbin3_pubkey, balance)],
-            Some(&keypair.pubkey()),
-            &recent_blockhash,
-        );
-        // Now, we ask the Rpc client what the fee for this mock transaction gonna be
-        let fee = rpc_client
-            .get_fee_for_message(&message)
-            .expect("Failed to get fee calculator");
-        // Let's transact with lamports of : balance -fee
+        println!("Latest blockhash: {}", recent_blockhash);
+        //Create and sign the transaction
         let transaction = Transaction::new_signed_with_payer(
-            &[transfer(&keypair.pubkey(), &turbin3_pubkey, balance - fee)],
+            &[transfer(&keypair.pubkey(), &to_pubkey, 1_000_000)],
             Some(&keypair.pubkey()),
             &vec![&keypair],
             recent_blockhash,
         );
-        // let's submit and grab the tx signature
+        // Send the transaction and print tx
         let signature = rpc_client
             .send_and_confirm_transaction(&transaction)
             .expect("Failed to send transaction");
         println!(
-            "Success! Check out your TX here: https://explorer.solana.com/tx/{}?cluster=devnet",
+            "Success! Check out your TX here: https://explorer.solana.com/tx/{}/?cluster=devnet",
             signature
         );
-    }
 
-    /// Enrolls a user by creating a Solana Devnet connection and executing a transaction.
-    /// The function reads the signer's keypair from a wallet file, derives the program address
-    /// for the prerequisite account, and sets up the GitHub account using provided arguments.
-    /// It retrieves the latest blockhash and invokes the `complete` function of the
-    /// TurbinePrereqProgram to create the transaction.
-    /// Finally, it sends and confirms the transaction, printing the transaction signature
-    /// upon success.
-    #[test]
-    fn enroll() {
-        // Let's create a Solana Devnet Connection
-        let rpc_client = RpcClient::new(RPC_URL);
-        // Let's define our accounts
-        let signer = read_keypair_file(TURBIN3_WALLET).expect("Couldn't find wallet file");
-        // Creating first PDA
-        let prereq = Turbin3PrereqProgram::derive_program_address(&[
-            PREREQ_SEED,
-            signer.pubkey().to_bytes().as_ref(),
-        ]);
-
-        // Let's set our github account
-        let args = CompleteArgs {
-            github: GITHUB_USER.to_vec(),
-        };
-
-        // Need Recent blockhash to publish our transaction
-        let blockhash = rpc_client
-            .get_latest_blockhash()
-            .expect("Failed to get recent blockhash");
-
-        // Now, we need to invoke our complete function
-        let transaction = Turbin3PrereqProgram::complete(
-            &[&signer.pubkey(), &prereq, &system_program::id()],
-            &args,
-            Some(&signer.pubkey()),
-            &[&signer],
-            blockhash,
+        //Get current balance
+        let balance = rpc_client
+            .get_balance(&keypair.pubkey())
+            .expect("Failed to get balance");
+        println!("Current balance: {}", balance);
+        //Build a mock transaction to calculate fee
+        let message = Message::new_with_blockhash(
+            &[transfer(&keypair.pubkey(), &to_pubkey, balance)],
+            Some(&keypair.pubkey()),
+            &recent_blockhash,
         );
-
-        // Let's publish our transaction
+        //Estimate transaction fee
+        let fee = rpc_client
+            .get_fee_for_message(&message)
+            .expect("Failed to get fee calculator");
+        println!("Fee: {}", fee);
+        println!("Balance minus fee: {}", balance - fee);
+        //Create final transaction with balance minus fee
+        let transaction = Transaction::new_signed_with_payer(
+            &[transfer(&keypair.pubkey(), &to_pubkey, balance - fee)],
+            Some(&keypair.pubkey()),
+            &vec![&keypair],
+            recent_blockhash,
+        );
+        //Send transaction and verify
         let signature = rpc_client
             .send_and_confirm_transaction(&transaction)
-            .expect("Failed to send transaction");
-        // Print tx hash upon success
+            .expect("Failed to send final transaction");
         println!(
-            "Success! Check out your TX here: https://explorer.solana.com/tx/{}?cluster=devnet",
+            "Success! Entire balance transferred: https://explorer.solana.com/tx/{}/?cluster=devnet",
             signature
         );
     }
 
-    /// Converts a user-provided base58 private key to a wallet file byte array.
-    /// The program reads the user's private key as base58, decodes it, and prints
-    /// the wallet file as a byte array.
     #[test]
-    fn base58_to_wallet() {
-        // Get User's private key as base58
-        println!("Input your private key as base58: ");
-        let stdin = io::stdin();
-        let base58 = stdin.lock().lines().next().unwrap().unwrap();
-        println!(" Your wallet file is: ");
-        let wallet = bs58::decode(base58).into_vec().unwrap();
-        println!("{:?}", wallet);
-    }
-
-    /// Converts a user-provided wallet file byte array to a base58 private key.
-    /// The program reads the user's wallet file as a byte array, encodes it, and prints
-    /// the base58 private key.
-    #[test]
-    fn wallet_to_base58() {
-        // Let's Get user's private key as bytes array
-        println!("Input your private key as a wallet file byte array: ");
-        let stdin = io::stdin();
-        let wallet = stdin
-            .lock()
-            .lines()
-            .next()
-            .unwrap()
-            .unwrap()
-            .trim_start_matches("[")
-            .trim_end_matches("]")
-            .split(",")
-            .map(|s| s.trim().parse::<u8>().unwrap())
-            .collect::<Vec<u8>>();
-        println!("Your private key is: ");
-        let base58 = bs58::encode(wallet).into_string();
-        println!("{:?}", base58);
-    }
+    fn enroll() {}
 }
