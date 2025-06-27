@@ -7,7 +7,7 @@
 - Setting up the computer (Solana CLI, Solana Tool Suite, Rust, and Anchor).
   <details>
   <summary>Documentation reference:</summary>
-  
+
   - [Solana Toolkit Docs](https://solana.com/docs/toolkit/getting-started)
   - [Solana Installation Docs](https://solana.com/docs/intro/installation)
   - [Test Validator Guide](https://solana.com/developers/guides/getstarted/solana-test-validator)
@@ -16,6 +16,12 @@
     - [Solana FM](https://solana.fm/)
   - [Solana RPC endpoint docs](https://solana.com/docs/references/clusters)
   </details>
+
+  ```shell
+  $ npx mucho install
+  ```
+
+  ![setup](./img/setup-mucho.png)
 
 - Running a local test validator, and setting up all the configurations.
 - Understanding different solana clusters and how to use them.
