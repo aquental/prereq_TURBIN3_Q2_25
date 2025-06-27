@@ -171,7 +171,9 @@ mod tests {
         let seeds = &[b"prereqs", signer_pubkey.as_ref()];
         let (prereq_pda, _bump) = Pubkey::find_program_address(seeds, &turbin3_prereq_program);
         // Authority (PDA)
-        let authority = Pubkey::from_str("5xstXUdRJKxRrqbJuo5SAfKf68y7afoYwTeH1FXbsA3k").unwrap();
+        let (authority, _authority_bump) =
+            Pubkey::find_program_address(&[b"collection", collection.as_ref()], &mpl_core_program);
+
         //Prepare the instruction data (discriminator)
         let data = vec![77, 124, 82, 163, 21, 133, 181, 206];
         //Define the accounts metadata
